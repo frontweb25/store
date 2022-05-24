@@ -116,14 +116,14 @@ body {
 }
 
 .cart-items {
-	margin-top: 50px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
 
 .cart-item {
 	display: flex;
-	
+	margin-bottom: 15px;
 }
 
 .cart-item-price {
@@ -139,4 +139,11 @@ body {
 .cart-item-price{
 	font-size: 34px;
 	padding-left: 10px;
+}
+
+.hide {
+	display: none;
+}
+.show{
+	display: block;
 }
