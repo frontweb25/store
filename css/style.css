@@ -71,6 +71,9 @@ body {
 	display: flex;
 	justify-content: space-between;
 }
+.product-cards{
+	
+}
 
 .product-item {
    width: 250px;

@@ -5,6 +5,8 @@ const tabsBtn = document.querySelectorAll('.btn');
 const tabsBlock = document.querySelector('.tabs');
 const cartProduct = document.querySelector('.product-items');
 const cartCotzina = document.querySelector('.cart-items');
+const blockProduct = document.querySelector('.product-cards');
+
 
 
 function hideTabContent() { 
@@ -19,18 +21,21 @@ function showTabContent(i = 0){
 }
 
 
+
 tabsBlock.addEventListener('click', (event) => {
     const target = event.target;
     if(target && target.classList.contains('btn')){
         tabsBtn.forEach((item, i) => { 
             if(target === item) {
                 hideTabContent();
-                showTabContent(i);
+                showTabContent(i); 
                 if(item.classList.contains('tab-corzina')) {
                     showBlock(cartCotzina);
-                    hideBlock(cartProduct);
+                    hideBlock(blockProduct);
+                    
+                    // blockProduct.remove(html);
                 } else if(item.classList.contains('tab-tovar')) {
-                    showBlock(cartProduct);
+                    showBlock(blockProduct);
                     hideBlock(cartCotzina);
                 }
             }
@@ -39,8 +44,11 @@ tabsBlock.addEventListener('click', (event) => {
 });
 
 
+
+
 function showBlock($el){
     $el.classList.remove('hide');
+    
 }
 
 function hideBlock($el) {
@@ -51,11 +59,40 @@ hideTabContent();
 showTabContent();
 
 
+function renderGoods(){
+    const div = document.createElement('div');
+    div.classList.add('product-items');
+
+    GOODS.forEach(item => {
+        
+        div.insertAdjacentHTML('beforeend', `
+        <div class="product-item">
+        <img src="${item.imgSrc}" />
+        <div class="product-list">
+          <h3>${item.name}</h3>
+          <p class="price">${item.price}</p>
+          <button class='button' data-add-in-cart="true">В корзину</button>
+        </div>
+        </div>
+        `);
+    });
+    
+    return div;
+}
+
+const html = renderGoods();
+blockProduct.append(html);
+
+
+
+
 
 //добавление элементов в корзину ======================
 
 const goodsInCart = [];
 const tabWithCounter = document.querySelector('button[data-goods-count]'); //получаем блок с количесвтом элементов в к/з
+const addInCartButtons = document.querySelectorAll('button[data-add-in-cart="true"]');
+clickEventListener(addInCartButtons, addInCartHandler);
 
 
 function createProduct() {
@@ -64,9 +101,6 @@ function createProduct() {
         price: 300
     };
 }
-
-const addInCartButtons = document.querySelectorAll('button[data-add-in-cart="true"]');
-clickEventListener(addInCartButtons, addInCartHandler);
 
 
 function clickEventListener(element, callback) {
