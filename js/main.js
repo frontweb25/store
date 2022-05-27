@@ -63,24 +63,29 @@ function renderGoods(){
     const div = document.createElement('div');
     div.classList.add('product-items');
 
-    GOODS.forEach(item => {
-        //создали карточку
-        const productBlock  = document.createElement('div');
-        productBlock.className = 'product-item';
-        productBlock.innerHTML = `
-        <img src="${item.imgSrc}" />
-        <div class="product-list">
-        <h3>${item.name}</h3>
-        <p class="price">₽ ${item.price}</p>
-        `;
-        //создали кнопку
-        const button = document.createElement('button');
-        button.className = 'button';
-        button.innerHTML = 'В корзину';
-        button.addEventListener('click', addInCartHandler);
-        div.append(productBlock);
-        productBlock.querySelector('.product-list').append(button)
-    });
+    for(let i = 0; i < GOODS.length; i++) {
+        const product = createProduct(GOODS[i]);
+            //создали карточку
+            const productBlock  = document.createElement('div');
+            productBlock.className = 'product-item';
+            productBlock.innerHTML = `
+            <img src="${product.imgSrc}" />
+            <div class="product-list">
+            <h3>${product.name}</h3>
+            <p class="price">₽ ${product.price}</p>
+            `;
+            //создали кнопку
+            const button = document.createElement('button');
+            button.className = 'button';
+            button.innerHTML = 'В корзину';
+            button.addEventListener('click', addInCartHandler(product));
+            div.append(productBlock);
+            productBlock.querySelector('.product-list').append(button);
+    }
+
+   
+    
+  
     return div;
 }
 
@@ -97,18 +102,22 @@ const goodsInCart = [];
 const tabWithCounter = document.querySelector('button[data-goods-count]'); //получаем блок с количесвтом элементов в к/з
 
 
-function createProduct() {
+function createProduct(product) {
     return {
-        name: 'Уроки по HTML',
-        price: 300
+        name: product.name ? product.name: 'Имя не найдено',
+        price: product.price ? product.price: 0,
+        imgSrc: product.imgSrc ? product.imgSrc : ''
     };
 }
 
 
 
-function addInCartHandler() {
-    const product = createProduct(); // делаем ссылку на обьект
+function addInCartHandler(product) {
+   return () => {
     goodsInCart.push(product); // добавляем в массив наш обьект
 
     tabWithCounter.dataset.goodsCount = goodsInCart.length;  // добавляем в корзину кол. элементов в массиве
+    console.log(goodsInCart);
+   };
+ 
 }
