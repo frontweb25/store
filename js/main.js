@@ -64,24 +64,28 @@ function renderGoods(){
     div.classList.add('product-items');
 
     GOODS.forEach(item => {
-        
-        div.insertAdjacentHTML('beforeend', `
-        <div class="product-item">
+        //создали карточку
+        const productBlock  = document.createElement('div');
+        productBlock.className = 'product-item';
+        productBlock.innerHTML = `
         <img src="${item.imgSrc}" />
         <div class="product-list">
-          <h3>${item.name}</h3>
-          <p class="price">${item.price}</p>
-          <button class='button' data-add-in-cart="true">В корзину</button>
-        </div>
-        </div>
-        `);
+        <h3>${item.name}</h3>
+        <p class="price">₽ ${item.price}</p>
+        `;
+        //создали кнопку
+        const button = document.createElement('button');
+        button.className = 'button';
+        button.innerHTML = 'В корзину';
+        button.addEventListener('click', addInCartHandler);
+        div.append(productBlock);
+        productBlock.querySelector('.product-list').append(button)
     });
-    
     return div;
 }
 
-const html = renderGoods();
-blockProduct.append(html);
+const html = renderGoods(); //записали сформированные карточки в переменную
+blockProduct.append(html); //добавили в блок карточки
 
 
 
@@ -91,8 +95,6 @@ blockProduct.append(html);
 
 const goodsInCart = [];
 const tabWithCounter = document.querySelector('button[data-goods-count]'); //получаем блок с количесвтом элементов в к/з
-const addInCartButtons = document.querySelectorAll('button[data-add-in-cart="true"]');
-clickEventListener(addInCartButtons, addInCartHandler);
 
 
 function createProduct() {
@@ -102,12 +104,6 @@ function createProduct() {
     };
 }
 
-
-function clickEventListener(element, callback) {
-    element.forEach(item => {  
-        item.addEventListener('click', callback); 
-    });
-}
 
 
 function addInCartHandler() {
